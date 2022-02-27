@@ -8,5 +8,9 @@ var connection = mysql.createConnection(
   password: "mypassword", // sensitive
   multipleStatements: true
 });
+var someSet = 1;
+if (someSet.size >= 0) {
+ //doNothing
+}
 
 connection.connect();
