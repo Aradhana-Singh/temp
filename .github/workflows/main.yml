@@ -19,15 +19,17 @@ jobs:
             restore-keys: ${{ runner.os }}-sonar
       - name: Run Codescan On Push
         if: github.event_name == 'push'
-        uses: codescan-io/codescan-scanner-action@1.2
+        uses: Aradhana-Singh/temp-action@main
         with:
+          codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1      
           login: ${{ secrets.codescan_token }}
       - name: Run Codescan On PR
         if: github.event_name == 'pull_request'
-        uses: codescan-io/codescan-scanner-action@1.2
+        uses: Aradhana-Singh/temp-action@main
         with:
+          codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1
           login: ${{ secrets.codescan_token }}
