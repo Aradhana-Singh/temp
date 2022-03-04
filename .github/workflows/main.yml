@@ -22,6 +22,7 @@ jobs:
         uses: Aradhana-Singh/temp-action@main
         with:
           codeScanUrl: https://preview.codescan.io/
+          generateSarifFile: false
           organization: preview-aradhana-org
           projectKey: small-sample1      
           login: e4837ba9d3471232ca7d7b8dc8b7c31400e37da9
@@ -30,6 +31,7 @@ jobs:
         uses: Aradhana-Singh/temp-action@main
         with:
           codeScanUrl: https://preview.codescan.io/
+          generateSarifFile: false
           organization: preview-aradhana-org
           projectKey: small-sample1
           login: e4837ba9d3471232ca7d7b8dc8b7c31400e37da9
