@@ -24,7 +24,7 @@ jobs:
           codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1      
-          login: ${{ secrets.codescan_token }}
+          login: e4837ba9d3471232ca7d7b8dc8b7c31400e37da9
       - name: Run Codescan On PR
         if: github.event_name == 'pull_request'
         uses: Aradhana-Singh/temp-action@main
@@ -32,7 +32,7 @@ jobs:
           codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1
-          login: ${{ secrets.codescan_token }}
+          login: e4837ba9d3471232ca7d7b8dc8b7c31400e37da9
           args: |
             sonar.branch.name=${{github.head_ref}}
             sonar.branch.target=${{github.base_ref}}
