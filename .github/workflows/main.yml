@@ -19,23 +19,25 @@ jobs:
             restore-keys: ${{ runner.os }}-sonar
       - name: Run Codescan On Push
         if: github.event_name == 'push'
-        uses: codescan-io/codescan-scanner-action@1.2
+        uses: codescan-io/codescan-scanner-action@master
         with:
           codeScanUrl: https://preview.codescan.io/
-          generateSarifFile: false
           organization: preview-aradhana-org
           projectKey: small-sample1      
-          login: e4837ba9d3471232ca7d7b8dc8b7c31400e37da9
+          login: 68430c502073ad7471b6fa2212d648760580ae1e
       - name: Run Codescan On PR
         if: github.event_name == 'pull_request'
-        uses: codescan-io/codescan-scanner-action@1.2
+        uses: codescan-io/codescan-scanner-action@master
         with:
           codeScanUrl: https://preview.codescan.io/
-          generateSarifFile: false
           organization: preview-aradhana-org
           projectKey: small-sample1
-          login: e4837ba9d3471232ca7d7b8dc8b7c31400e37da9
+          login: 68430c502073ad7471b6fa2212d648760580ae1e
           args: |
             sonar.branch.name=${{github.head_ref}}
             sonar.branch.target=${{github.base_ref}}
             sonar.branch.type=SHORT
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: codescan.sarif
