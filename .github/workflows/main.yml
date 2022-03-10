@@ -24,7 +24,7 @@ jobs:
           codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1      
-          login: d6d9a8478e3537f64e92144c0f460b1c86c8f686
+          login: a088e3de96a777dbd37d05f44c923ecb8929e3f6
           generateSarifFile: true
       - name: Run Codescan On PR
         if: github.event_name == 'pull_request'
@@ -33,7 +33,7 @@ jobs:
           codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1
-          login: d6d9a8478e3537f64e92144c0f460b1c86c8f686
+          login: a088e3de96a777dbd37d05f44c923ecb8929e3f6
           generateSarifFile: true
           args: |
             sonar.branch.name=${{github.head_ref}}
