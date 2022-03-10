@@ -25,6 +25,7 @@ jobs:
           organization: preview-aradhana-org
           projectKey: small-sample1      
           login: 5a7ed711ba0d0099641af89b6516405905dff067
+          generateSarifFile: true
       - name: Run Codescan On PR
         if: github.event_name == 'pull_request'
         uses: codescan-io/codescan-scanner-action@master
@@ -33,6 +34,7 @@ jobs:
           organization: preview-aradhana-org
           projectKey: small-sample1
           login: 5a7ed711ba0d0099641af89b6516405905dff067
+          generateSarifFile: true
           args: |
             sonar.branch.name=${{github.head_ref}}
             sonar.branch.target=${{github.base_ref}}
