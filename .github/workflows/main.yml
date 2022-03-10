@@ -21,20 +21,18 @@ jobs:
         if: github.event_name == 'push'
         uses: codescan-io/codescan-scanner-action@master
         with:
-          codeScanUrl: http://646c-103-220-30-110.ngrok.io
+          codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1      
-          login: f5dc9fdf640255c4c4ff07b43f4da8559490768c
-          generateSarifFile: true
+          login: 5a7ed711ba0d0099641af89b6516405905dff067
       - name: Run Codescan On PR
         if: github.event_name == 'pull_request'
         uses: codescan-io/codescan-scanner-action@master
         with:
-          codeScanUrl: http://646c-103-220-30-110.ngrok.io
+          codeScanUrl: https://preview.codescan.io/
           organization: preview-aradhana-org
           projectKey: small-sample1
-          login: f5dc9fdf640255c4c4ff07b43f4da8559490768c
-          generateSarifFile: true
+          login: 5a7ed711ba0d0099641af89b6516405905dff067
           args: |
             sonar.branch.name=${{github.head_ref}}
             sonar.branch.target=${{github.base_ref}}
