@@ -1,0 +1,114 @@
+<aura:component controller="VALERI_Retrieve_VDR_Record" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:registerEvent name="VADataSave" type="c:VALERI_VADataSaveEvent" />
+    <aura:attribute name="VDRDetail" type="VALERI_VA_Data_Record__c" default="{ 'sobjectType': 'VALERI_VA_Data_Record__c' }"/>
+    <aura:attribute name="isProcessActive" type="Boolean" default="false"/>
+    <aura:attribute name="paymentId" type="String" default=""/>
+    <aura:attribute name="isPostAudit" type="Boolean" default="true"/>
+    <aura:attribute name="stateError" type="String"/>
+    <aura:attribute name="isDisabled" type="Boolean"/>
+	<aura:attribute name="today" type="Date" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:VALERI_LockVAFieldsEvent" action="{!c.saveVaData}"/>
+    <!--START 07152020 C.Witcher added attributes to support for boc_amount static display and editability US1214269-->
+    <aura:attribute name="bocType" type="String" description="Identifies that special validation is needed with PM Fee"/>
+    <aura:attribute name="pmFee" type="String" description="The property management fee on the VDR"/>
+    <aura:attribute name="originalAmount" type="String" default="" description="Amount from Payment Detail before BOC change"/>
+    <aura:attribute name="stepNumber" type="String" description="The Current Step Number" default="{!v.simpleRecordProcStep.Step_Number__c}"/>
+    <aura:attribute name="stepStatus" type="String" description="The Status for this Step" default="{!v.simpleRecordProcStep.Status__c}"/>
+    <aura:attribute name="isBocAmountDisabled" 
+                    type="Boolean" 
+                    default="{! not(and(or(v.stepNumber==1,v.stepNumber==2), v.stepStatus!='Completed',v.isDisabled))}"/>
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="recordProcStep" type="Object" />
+    <aura:attribute name="simpleRecordProcStep" type="Object" />
+     <!-- Added by S.Daniels on 2020-11-30 Story #LM-20134 to support error handling, display and system event logging-->
+     <aura:attribute name="componentName" type="String" default="VALERI_ProcessStep_BOCInformation" description="Referenced in Error Handler"/>
+     <c:VALERI_Error_Display aura:id="errorService" />
+    <force:recordData aura:id="smartListRecordProcStep"
+    recordId="{!v.recordId}"
+    targetRecord ="{!v.recordProcStep}"
+    targetFields="{!v.simpleRecordProcStep}"
+    fields="Status__c, Step_Number__c"/>
+    <!--END 07152020 C.Witcher added attributes to support for boc_amount static display and editability US1214269-->
+    <aura:if isTrue="{! !empty(v.VDRDetail.Id)}">
+		<div class="slds-page-header">
+        	<h1>
+                <span class="slds-page-header__title slds-truncate " title="BOC Information">BOC Information</span>
+            </h1>
+        </div>
+        <br/>
+        <div class="slds-hide slds-page-header addedHeaderStyle" aura:id="errorMessage">
+            <ui:message  title="Error" severity="error" closable="true" >
+                {!$Label.c.VALERI_Required_Field_Error_Message}
+            </ui:message>
+        </div>
+        <force:inputField value="{!v.VDRDetail.Pay_to_Servicer__c}"/>
+        <aura:if isTrue="{!v.isPostAudit}">
+        	<lightning:recordEditForm aura:id="recordNewForm" 
+                                      objectApiName="VALERI_VA_Data_Record__c"
+                                      recordId="{!v.VDRDetail.Id}"
+                                      class="slds-col slds-size_11-of-12">
+                <lightning:layout >
+                    <lightning:layoutItem flexibility="auto" size="4" padding="horizontal-large">                
+                        <label class="customRequired">Justification</label>
+                        <div class="topSpacing ">
+                            <lightning:inputField aura:id="bojJustification" fieldName="BOC_Justification__c" disabled="true"/>
+                        </div>                    
+                    </lightning:layoutItem>
+                    <lightning:layoutItem flexibility="auto" size="4" padding="horizontal-large">   				
+                        <label>Type</label>
+                        <div class="topSpacing">
+                            <lightning:inputField fieldName="BOC_Type__c" disabled="true"/>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>	
+                <br/><br/>
+                <lightning:layout >
+    
+                    <!--START 07152020 C.Witcher added for US1214269-->
+                    <br/><br/>
+                    <lightning:layoutItem flexibility="auto" size="4" padding="horizontal-large">
+                        <label>Amount Previously Paid</label><br></br>
+                        <label class="slds-form-element__label" for="origAmtInput">Payment Amount</label>
+                        <div class="topSpacing">
+                            <lightning:inputField   :id="origAmtInput" id="origAmtInput" fieldName="BOC_Amount__c" value="{!v.originalAmount}"  disabled="true" variant="label-hidden"/>
+                        </div>
+                    </lightning:layoutItem>                
+                    <!--END 07152020 C.Witcher added for US1214269-->
+    
+                    <lightning:layoutItem flexibility="auto" size="4" padding="horizontal-large">
+                        <!--Changed by S. Daniels on 11/30/2020 for LM-20134 replaced 'justification in the comments' to 'reason' -->
+                        <label class="customRequired">When editing the BOC Amount, please enter a justification reason.</label>
+                        <div class="topSpacing">
+                            <lightning:inputField aura:id="bocInput" 
+                            fieldName="BOC_Amount__c" 
+                            disabled="{!v.isBocAmountDisabled}"/><!--07152020 C.Witcher allow edit on active step#1 or step#2 only. US1214269-->
+                        </div>
+                    </lightning:layoutItem>
+    
+                        <aura:if isTrue="{!v.isDisabled}">
+                            <lightning:layoutItem flexibility="auto" size="4" padding="horizontal-large">
+                                <label class="customRequired">Pay To Servicer</label>
+                                <div class="topSpacing ">
+                                    <lightning:inputField  aura:id="payToServicer"
+                                                          fieldName="Pay_to_Servicer__c" disabled="{!v.isProcessActive}"/>
+                                </div>
+                            </lightning:layoutItem>
+                        </aura:if>
+                        
+                    </lightning:layout> 
+            </lightning:recordEditForm>
+            
+        </aura:if>
+        
+        <!-- Child Component-->
+        <aura:if isTrue="{! and(!empty(v.VDRDetail.BOC_Type__c), v.VDRDetail.BOC_Type__c == 'Acquisition')}">
+            <div>
+                <c:VALERI_BOC_Acquisition_Information caseId="{!v.recordId}" VADataId="{!v.VDRDetail.Id}"/>        
+            </div>
+        </aura:if>
+        <!-- /Child Component -->
+	</aura:if>
+</aura:component>
