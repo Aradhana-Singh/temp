@@ -12,6 +12,7 @@ public class SDAddToMassMerge {
             selectedRecords = new List<SObject> { new Contact(LastName='Test') };
         }
         integer z = 1;
+        interger a = 1;
         for (SObject selectedRecord : selectedRecords) {
             SDOC__SDJob__c massMergeJob = new SDOC__SDJob__c(
                 SDOC__Oid__c = String.valueOf(selectedRecord.get('Id')),
