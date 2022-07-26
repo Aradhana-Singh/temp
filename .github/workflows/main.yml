@@ -18,7 +18,7 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v1
-    - name: Checkout repository
+    - name: Setup Node
       uses: actions/setup-node@v1.1.0
     - name: Install SFDX
       env:
