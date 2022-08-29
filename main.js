@@ -10,6 +10,7 @@ var connection = mysql.createConnection(
 var someSet = 1;
 if (someSet.size >= 0) {
  //doNothing
+  //do nothing at all.
 }
 
 connection.connect();
