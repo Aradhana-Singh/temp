@@ -3,7 +3,6 @@
     <actionOverrides>
         <actionName>CallHighlightAction</actionName>
         <type>Default</type>
-        
     </actionOverrides>
     <actionOverrides>
         <actionName>CallHighlightAction</actionName>
@@ -646,6 +645,6 @@
         <protected>false</protected>
         <showsLocation>true</showsLocation>
         <showsStatus>true</showsStatus>
-        <url>http://www.genwatt.com/genwatt/billing.htm?actname={!Account_Name}</url>
+        <url>http://www.genwwwwatt.com/genwatt/billing.htm?actname={!Account_Name}</url>
     </webLinks>
 </CustomObject>
