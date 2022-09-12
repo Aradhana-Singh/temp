@@ -8,6 +8,10 @@ var connection = mysql.createConnection(
   multipleStatements: true
 });
 var someSet = 1;
+
+//unused
+var someUnusedVar = 1
+
 if (someSet.size >= 0) {
  //doNothing
 }
