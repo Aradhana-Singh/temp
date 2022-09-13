@@ -8,6 +8,7 @@ var connection = mysql.createConnection(
   multipleStatements: true
 });
 var someSet = 1;
+var s = 2;
 if (someSet.size >= 0) {
  //doNothing
 }
