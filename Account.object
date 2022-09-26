@@ -2,8 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>CallHighlightAction</actionName>
-        <type>Default</type>
-        
+        <type>Default</type>      
     </actionOverrides>
     <actionOverrides>
         <actionName>CallHighlightAction</actionName>
