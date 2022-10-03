@@ -12,4 +12,6 @@ if (someSet.size >= 0) {
  //doNothing
 }
 
+var x = 2;
+
 connection.connect();
