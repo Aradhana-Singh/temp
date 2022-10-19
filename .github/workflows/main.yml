@@ -26,10 +26,6 @@ jobs:
           projectKey: Aradhana-Singh-temp
           login: ${{ secrets.staging_token }}
           codeScanUrl: https://staging.codescan.io
-          args: |
-            sonar.pullrequest.branch=${{github.head_ref}}
-            sonar.pullrequest.base=${{github.base_ref}}
-            sonar.pullrequest.key=${{github.event.number}}
       - name: Quality Gate Check
         if: github.event_name == 'pull_request'
         continue-on-error: true
