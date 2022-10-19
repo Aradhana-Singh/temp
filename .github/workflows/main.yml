@@ -1,0 +1,44 @@
+name: CodeScan GitHub Actions
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Cache files
+        uses: actions/cache@v2
+        with:
+            path: |
+                ~/.sonar
+            key: ${{ runner.os }}-sonar
+            restore-keys: ${{ runner.os }}-sonar
+      - name: Run Codescan On Pull Request created,reopened,synchronize
+        continue-on-error: true
+        if: github.event_name == 'pull_request'
+        uses: codescan-io/codescan-scanner-action@1.3
+        with:
+            organization: aradhana-singh9204
+            projectKey: Aradhana-Singh-temp
+            login: ${{ secrets.staging_token }}
+            args: |
+              sonar.host.url=https://staging.codescan.io
+      - name: Quality Gate Check
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        env:
+            TOKEN: ${{ secrets.staging_token }}
+            PR_KEY: ${{github.event.number}}
+            PROJECT_KEY: Aradhana-Singh-temp
+        run: |
+            echo  $(curl -s -u "$TOKEN": "https://XXXXXXXXX.com/api/qualitygates/project_status?projectKey=$PROJECT_KEY&pullRequest=$PR_KEY")
+            qg_status=$(curl -s -u "$TOKEN": "https://XXXXXXX.com/api/qualitygates/project_status?projectKey=$PROJECT_KEY&pullRequest=$PR_KEY" | jq -r '.projectStatus.status')
+            echo "QG Script --> Quality Gate status is ${qg_status}"
+            if [ "${qg_status}" != "OK" ]; then
+              echo "QG Script --> Quality gate is not OK - exiting with error"
+              exit 1
+              fi
