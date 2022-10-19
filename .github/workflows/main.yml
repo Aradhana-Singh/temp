@@ -22,24 +22,24 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: codescan-io/codescan-scanner-action@1.3
         with:
-          organization: default-organization
-          projectKey: AradhanaProject
-          login: ${{ secrets.local_token }}
+          organization: aradhana-singh9204
+          projectKey: Aradhana-Singh-temp
+          login: ${{ secrets.staging_token }}
+          codeScanUrl: https://staging.codescan.io
           args: |
             sonar.pullrequest.branch=${{github.head_ref}}
             sonar.pullrequest.base=${{github.base_ref}}
             sonar.pullrequest.key=${{github.event.number}}
-            sonar.host.url=http://5ac0-103-220-30-110.ngrok.io
       - name: Quality Gate Check
         if: github.event_name == 'pull_request'
         continue-on-error: true
         env:
-          TOKEN: ${{ secrets.local_token }}
+          TOKEN: ${{ secrets.staging_token }}
           PR_KEY: ${{github.event.number}}
-          PROJECT_KEY: AradhanaProject
+          PROJECT_KEY: Aradhana-Singh-temp
         run: |
-          echo  $(curl -s -u "$TOKEN": "http://5ac0-103-220-30-110.ngrok.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY&pullRequest=$PR_KEY")
-          qg_status=$(curl -s -u "$TOKEN": "http://5ac0-103-220-30-110.ngrok.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY&pullRequest=$PR_KEY" | jq -r '.projectStatus.status')
+          echo  $(curl -s -u "$TOKEN": "https://staging.codescan.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY&pullRequest=$PR_KEY")
+          qg_status=$(curl -s -u "$TOKEN": "https://staging.codescan.io/api/qualitygates/project_status?projectKey=$PROJECT_KEY&pullRequest=$PR_KEY" | jq -r '.projectStatus.status')
           echo "QG Script --> Quality Gate status is ${qg_status}"
           if [ "${qg_status}" != "OK" ]; then
             echo "QG Script --> Quality gate is not OK - exiting with error"
