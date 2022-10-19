@@ -17,16 +17,6 @@ jobs:
                 ~/.sonar
             key: ${{ runner.os }}-sonar
             restore-keys: ${{ runner.os }}-sonar
-      - name: Run Codescan On Push
-        continue-on-error: true
-        if: github.event_name == 'push'
-        uses: codescan-io/codescan-scanner-action@1.3
-        with:
-          organization: default-organization
-          projectKey: AradhanaProject       
-          login: ${{ secrets.local_token }}
-          args: |
-            sonar.host.url=http://5ac0-103-220-30-110.ngrok.io
       - name: Run Codescan On PR
         continue-on-error: true
         if: github.event_name == 'pull_request'
