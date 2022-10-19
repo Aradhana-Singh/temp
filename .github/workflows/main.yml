@@ -17,6 +17,15 @@ jobs:
                 ~/.sonar
             key: ${{ runner.os }}-sonar
             restore-keys: ${{ runner.os }}-sonar
+      - name: Run Codescan On Push
+        continue-on-error: true
+        if: github.event_name == 'push'
+        uses: codescan-io/codescan-scanner-action@1.3
+        with:
+          organization: org-as1
+          projectKey: ProjectAS
+          login: ${{ secrets.sonarcloud_token }}
+          codeScanUrl: https://sonarcloud.io
       - name: Run Codescan On PR
         continue-on-error: true
         if: github.event_name == 'pull_request'
