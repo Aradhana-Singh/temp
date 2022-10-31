@@ -156,6 +156,28 @@ global with sharing class BINGOController {
         pageRef.setRedirect(true);
         return pageRef;
     }
+  
+      public void getStuffInLoops(){
+
+        integer i = 10;
+
+        for(integer j =0;j < i ; j++){
+
+            Account acc = new Account();
+
+            acc.name = 'Test';
+
+            insert acc;
+
+            List<Account> lstAcc = [Select id from account limit 10];
+
+            List<Account> lstAccTwo = ClassTwo.getStuff();
+
+            List<Account> lstAccThree = getStuffInMethod();
+
+        }
+
+    }
     
     /**
      * Method deprecated, now that renderAs is included in Page.BINGO.
