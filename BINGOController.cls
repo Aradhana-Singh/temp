@@ -55,6 +55,28 @@ global with sharing class BINGOController {
      * The constructor for BingoController
      */
     
+      public void getStuffInLoops(){
+
+        integer i = 10;
+
+        for(integer j =0;j < i ; j++){
+
+            Account acc = new Account();
+
+            acc.name = 'Test';
+
+            insert acc;
+
+            List<Account> lstAcc = [Select id from account limit 10];
+
+            List<Account> lstAccTwo = ClassTwo.getStuff();
+
+            List<Account> lstAccThree = getStuffInMethod();
+
+        }
+
+    }
+  
     public BingoController(){
         Cookie userCookie = new Cookie('CookieName', 'Test', null, 315569260, false);
   		ApexPages.currentPage().setCookies(new Cookie[] {
