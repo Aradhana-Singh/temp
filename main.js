@@ -15,3 +15,7 @@ if (someSet.size >= 0) {
 var x = 2;
 
 connection.connect();
+var arr;
+var merged = arr.reduce(function(a, b) {
+  a.concat(b);
+}); // 
