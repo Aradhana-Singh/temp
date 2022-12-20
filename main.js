@@ -14,7 +14,9 @@ if (someSet.size >= 0) {
 
 var x = 2;
 
-car y = 3;
+var y = 3;
+
+var newVariable = 5;
 
 connection.connect();
 var arr;
