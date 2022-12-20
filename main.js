@@ -14,6 +14,8 @@ if (someSet.size >= 0) {
 
 var x = 2;
 
+car y = 3;
+
 connection.connect();
 var arr;
 var merged = arr.reduce(function(a, b) {
