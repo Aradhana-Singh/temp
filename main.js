@@ -12,9 +12,7 @@ if (someSet.size >= 0) {
  //doNothing
 }
 
-var x = 2;
-
-car y = 3;
+var x = 5;
 
 connection.connect();
 var arr;
